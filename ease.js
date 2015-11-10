@@ -8,7 +8,8 @@ function Ease(apiToken) {
 
   this.connect = function(application) {
     var currentEase = this;
-    currentEase.conn = new WebSocket("ws://ease-62q56ueo.cloudapp.net/sub");
+    //currentEase.conn = new WebSocket("ws://localhost:3001/sub");
+    currentEase.conn = new WebSocket("ws://localhost:3001/sub");
     currentEase.conn.onclose = function(e) {
       console.log("Connection closed");
     };
@@ -23,7 +24,7 @@ function Ease(apiToken) {
     data.username = username;
     data.password = password;
     $.ajax({
-      url: 'http://ease-62q56ueo.cloudapp.net/users/sign_in',
+      url: 'http://localhost:3001/users/sign_in',
       type: "POST",
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
@@ -43,7 +44,7 @@ function Ease(apiToken) {
     data.username = username;
     data.password = password;
     $.ajax({
-      url: 'http://ease-62q56ueo.cloudapp.net/users/sign_up',
+      url: 'http://localhost:3001/users/sign_up',
       type: "POST",
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
@@ -59,7 +60,7 @@ function Ease(apiToken) {
 
   this.getApplications = function() {
     $.ajax({
-      url: 'http://ease-62q56ueo.cloudapp.net/users/applications',
+      url: 'http://localhost:3001/users/applications',
       type: "GET",
       async: false,
       contentType: 'application/json; charset=utf-8;',
@@ -74,7 +75,7 @@ function Ease(apiToken) {
 
   this.deleteApplication = function(application) {
 	$.ajax({
-		url: 'http://ease-62q56ueo.cloudapp.net/users/applications/' + application,
+		url: 'http://localhost:3001/users/applications/' + application,
 		type: "DELETE",
 		async: false,
 		contentType: 'application/json; charset=utf-8;',
@@ -89,7 +90,7 @@ function Ease(apiToken) {
 
   this.createApplication = function(application) {
 	  $.ajax({
-		  url: 'http://ease-62q56ueo.cloudapp.net/users/applications/' + application,
+		  url: 'http://localhost:3001/users/applications/' + application,
 		  type: "POST",
 		  async: false,
 		  contentType: 'application/json; charset=utf-8;',
@@ -114,8 +115,23 @@ function Ease(apiToken) {
     if(this.conn == undefined) {
       this.connect();
     }
-
-    this.conn.send(application);
+    
+    if(this.conn.readyState === 1) {  
+      this.conn.send(application);
+    } else {
+      this.setCallback(this.conn.send, application);
+    }
+  }
+  
+  this.setCallback = function(calling, argument) {
+    if(this.conn.readyState === 1) {
+      calling(argument);
+    } else {
+      var that = this;
+      setTimeout(function () {
+        that.setCallback(calling, argument);
+      }, 1000);
+    }
   }
 
 }
