@@ -113,6 +113,8 @@ function EaseInternal(apiToken) {
 
 function Ease(username, appName, appToken) {
 
+  this.username = username;
+  this.appName = appName;
   this.appToken = appToken;
 
   this.sendRequest = function(url, type, dataToSend) {
