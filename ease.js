@@ -141,7 +141,7 @@ function Ease(username, appName, appToken) {
       path : path,
       data : data
     };
-    return this.sendRequest("http://ease-62q56ueo.cloudapp.net/data/"+this.username+"/"+this.appName, "POST", json.stringify(dataToSend));
+    return this.sendRequest("http://ease-62q56ueo.cloudapp.net/data/"+this.username+"/"+this.appName, "POST", JSON.stringify(dataToSend));
   };
 
   this.read = function(path) {
