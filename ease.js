@@ -9,16 +9,16 @@ function EaseInternal(apiToken) {
   this.appToken = "";
 
   // Methods of API object
-  
+
   this.setApplication = function(token) {
     this.appName = token.name;
     this.appToken = token.app_token;
   };
-  
+
   this.getApplications = function() {
     var response = "";
     $.ajax({
-      url: 'http://localhost:3000/users/applications',
+      url: 'http://ease-62q56ueo.cloudapp.net/users/applications',
       type: "GET",
       async: false,
       contentType: 'application/json; charset=utf-8;',
@@ -32,7 +32,7 @@ function EaseInternal(apiToken) {
     });
     return response;
   };
-  
+
   this.close = function() {
     var currentEase = this;
     currentEase.conn.close();
@@ -45,7 +45,7 @@ function EaseInternal(apiToken) {
     data.password = password;
     currentEase.username = username;
     return $.ajax({
-      url: 'http://localhost:3000/users/sign_in',
+      url: 'http://ease-62q56ueo.cloudapp.net/users/sign_in',
       type: "POST",
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
@@ -65,7 +65,7 @@ function EaseInternal(apiToken) {
     data.username = username;
     data.password = password;
     return $.ajax({
-      url: 'http://localhost:3000/users/sign_up',
+      url: 'http://ease-62q56ueo.cloudapp.net/users/sign_up',
       type: "POST",
       contentType: 'application/json; charset=utf-8',
       data: JSON.stringify(data),
@@ -81,7 +81,7 @@ function EaseInternal(apiToken) {
 
   this.deleteApplication = function(application) {
 	$.ajax({
-		url: 'http://localhost:3000/users/applications/' + application,
+		url: 'http://ease-62q56ueo.cloudapp.net/users/applications/' + application,
 		type: "DELETE",
 		async: false,
 		contentType: 'application/json; charset=utf-8;',
@@ -96,7 +96,7 @@ function EaseInternal(apiToken) {
 
   this.createApplication = function(application) {
 	  $.ajax({
-		  url: 'http://localhost:3000/users/applications/' + application,
+		  url: 'http://ease-62q56ueo.cloudapp.net/users/applications/' + application,
 		  type: "POST",
 		  async: false,
 		  contentType: 'application/json; charset=utf-8;',
@@ -112,9 +112,9 @@ function EaseInternal(apiToken) {
 }
 
 function Ease(username, appName, appToken) {
-  
+
   this.appToken = appToken;
-  
+
   this.sendRequest = function(url, type, dataToSend) {
     return $.ajax({
       url: url,
@@ -133,43 +133,43 @@ function Ease(username, appName, appToken) {
       console.error(errorThrown);
     });
   }
-  
+
   this.save = function(path, data) {
     var dataToSend = {
       path : path,
       data : data
     };
-    return this.sendRequest("http://localhost:3000/data/"+this.username+"/"+this.appName, "POST", json.stringify(dataToSend));
+    return this.sendRequest("http://ease-62q56ueo.cloudapp.net/data/"+this.username+"/"+this.appName, "POST", json.stringify(dataToSend));
   };
-  
+
   this.read = function(path) {
     var dataToSend = {
       path : path
     };
-    return this.sendRequest("http://localhost:3000/data/"+this.username+"/"+this.appName, "GET", dataToSend);
+    return this.sendRequest("http://ease-62q56ueo.cloudapp.net/data/"+this.username+"/"+this.appName, "GET", dataToSend);
   };
-  
+
   this.delete = function(path, data) {
     var dataToSend = {
       path : path,
       data : data
     };
-    
-    return this.sendRequest('http://localhost:3000/data/' + this.username + '/' + this.appName, "DELETE", dataToSend);
+
+    return this.sendRequest('http://ease-62q56ueo.cloudapp.net/data/' + this.username + '/' + this.appName, "DELETE", dataToSend);
   };
-  
+
   this.sync = function() {
     for(var i=0; i< this.binds.length; i++) {
       this.conn.send(binds[i].html);
     }
   };
-  
+
   this.subscribe = function(application) {
     if(this.conn == undefined) {
       this.connect();
     }
-    
-    if(this.conn.readyState === 1) {  
+
+    if(this.conn.readyState === 1) {
       var dataToSend = {
           username: ease.username,
           application: application
@@ -179,7 +179,7 @@ function Ease(username, appName, appToken) {
       this.setCallback(this.conn.send, application);
     }
   };
-  
+
   this.connect = function(application) {
     var currentEase = this;
     //currentEase.conn = new WebSocket("ws://localhost:3000/sub");
@@ -191,7 +191,7 @@ function Ease(username, appName, appToken) {
       //To be refactored
     };
   };
-  
+
   this.setCallback = function(argument) {
     if(this.conn.readyState === 1) {
       this.conn.send(argument);
