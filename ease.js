@@ -1,9 +1,9 @@
 function Ease(username, appName, appToken) {
   var urls = {
     localhost: 'localhost:3000/',
-    prod: 'ease-62q56ueo.cloudapp.net/'
+    prod: 'ease-62q56ueo.cloudapp.net'
   }
-  this.baseUrl = urls.localhost;
+  this.baseUrl = urls.prod;
   this.username = username;
   this.appName = appName;
   this.appToken = appToken;
@@ -34,14 +34,14 @@ function Ease(username, appName, appToken) {
       path : path,
       data : data
     };
-    return this.sendRequest("http://"+this.baseUrl +"data/"+this.username+"/"+this.appName, "POST", JSON.stringify(dataToSend));
+    return JSON.parse(this.sendRequest("http://"+this.baseUrl +"/data/"+this.username+"/"+this.appName, "POST", JSON.stringify(dataToSend)));
   };
 
   this.read = function(path) {
     var dataToSend = {
       path : path
     };
-    return this.sendRequest("http://"+this.baseUrl +"data/"+this.username+"/"+this.appName, "GET", dataToSend);
+    return JSON.parse(this.sendRequest("http://"+this.baseUrl +"/data/"+this.username+"/"+this.appName, "GET", dataToSend));
   };
 
   this.delete = function(path, data) {
@@ -50,7 +50,7 @@ function Ease(username, appName, appToken) {
       data : data
     };
 
-    return this.sendRequest("http://"+this.baseUrl +'data/' + this.username + '/' + this.appName, "DELETE", JSON.stringify(dataToSend));
+    return JSON.parse(this.sendRequest("http://"+this.baseUrl +'/data/' + this.username + '/' + this.appName, "DELETE", JSON.stringify(dataToSend)));
   };
 
   this.sync = function() {
@@ -64,14 +64,16 @@ function Ease(username, appName, appToken) {
       this.connect();
     }
 
+    var dataToSend = {
+        username: this.username,
+        table_name: application,
+        authorization: this.appToken
+    };
+
     if(this.conn.readyState === 1) {
-      var dataToSend = {
-          username: ease.username,
-          application: application
-      }
-      this.conn.send(dataToSend);
+      this.conn.send(JSON.stringify(dataToSend));
     } else {
-      this.setCallback(this.conn.send, application);
+      this.setCallback(dataToSend);
     }
   };
 
@@ -82,14 +84,16 @@ function Ease(username, appName, appToken) {
       console.log("Connection closed");
     };
     currentEase.conn.onmessage = function(e) {
-      //To be refactored
+      console.log(e);
+      return e;
     };
   };
 
   this.setCallback = function(argument) {
-    if(this.conn.readyState === 1) {
-      this.conn.send(argument);
+    if(this.conn.readyState == 1) {
+      this.conn.send(JSON.stringify(argument));
     } else {
+      console.log("Not Ready");
       var that = this;
       setTimeout(function () {
         that.setCallback(argument);
