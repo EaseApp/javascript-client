@@ -34,14 +34,14 @@ function Ease(username, appName, appToken) {
       path : path,
       data : data
     };
-    return this.sendRequest("http://"+baseUrl +"data/"+this.username+"/"+this.appName, "POST", JSON.stringify(dataToSend));
+    return this.sendRequest("http://"+this.baseUrl +"data/"+this.username+"/"+this.appName, "POST", JSON.stringify(dataToSend));
   };
 
   this.read = function(path) {
     var dataToSend = {
       path : path
     };
-    return this.sendRequest("http://"+baseUrl +"data/"+this.username+"/"+this.appName, "GET", dataToSend);
+    return this.sendRequest("http://"+this.baseUrl +"data/"+this.username+"/"+this.appName, "GET", dataToSend);
   };
 
   this.delete = function(path, data) {
@@ -50,7 +50,7 @@ function Ease(username, appName, appToken) {
       data : data
     };
 
-    return this.sendRequest("http://"+baseUrl +'data/' + this.username + '/' + this.appName, "DELETE", JSON.stringify(dataToSend));
+    return this.sendRequest("http://"+this.baseUrl +'data/' + this.username + '/' + this.appName, "DELETE", JSON.stringify(dataToSend));
   };
 
   this.sync = function() {
@@ -77,7 +77,7 @@ function Ease(username, appName, appToken) {
 
   this.connect = function(application) {
     var currentEase = this;
-    currentEase.conn = new WebSocket("ws://"+baseUrl+":8000/sub");
+    currentEase.conn = new WebSocket("ws://"+this.baseUrl+":8000/sub");
     currentEase.conn.onclose = function(e) {
       console.log("Connection closed");
     };
