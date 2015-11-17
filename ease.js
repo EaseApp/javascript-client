@@ -74,7 +74,7 @@ function Ease(username, appName, appToken) {
   this.connect = function(application) {
     var currentEase = this;
     //currentEase.conn = new WebSocket("ws://localhost:3000/sub");
-    currentEase.conn = new WebSocket("ws://localhost:8000/sub");
+    currentEase.conn = new WebSocket("ws://ease-62q56ueo.cloudapp.net:8000/sub");
     currentEase.conn.onclose = function(e) {
       console.log("Connection closed");
     };
