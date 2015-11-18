@@ -70,7 +70,7 @@ function Ease(username, appName, appToken) {
 
     var dataToSend = {
         username: this.username,
-        table_name: application,
+        appName: application,
         authorization: this.appToken
     };
 
@@ -88,8 +88,8 @@ function Ease(username, appName, appToken) {
       console.log("Connection closed");
     };
     currentEase.conn.onmessage = function(e) {
-      console.log(e);
-      return e;
+      console.log(e.data);
+      return e.data;
     };
   };
 
