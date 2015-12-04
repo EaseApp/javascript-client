@@ -1,9 +1,9 @@
 function Ease(username, appName, appToken, prodBoolean) {
   var urls = {
     localhost: 'localhost:3001',
-    prod: 'ease-62q56ueo.cloudapp.net:3001',
+    prod: 'api.easeapp.co',
     localSync: 'ws://localhost:8000',
-    prodSync: 'ws://ease-62q56ueo.cloudapp.net:8000'
+    prodSync: 'ws://sync.easeapp.co:8000'
   }
 
   if (prodBoolean == true){
