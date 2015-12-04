@@ -1,14 +1,28 @@
-function Ease(username, appName, appToken) {
+function Ease(username, appName, appToken, prodBoolean) {
   var urls = {
-    localhost: 'localhost:3000/',
-    prod: 'ease-62q56ueo.cloudapp.net:3001'
+    localhost: 'localhost:3001',
+    prod: 'api.easeapp.co',
+    localSync: 'ws://localhost:8000',
+    prodSync: 'ws://sync.easeapp.co:8000'
   }
-  this.baseUrl = urls.prod;
+
+  if (prodBoolean == true){
+    this.baseUrl = urls.prod;
+    this.syncUrl = urls.prodSync;
+  }
+  else{
+    this.baseUrl = urls.localhost;
+    this.syncUrl = urls.localSync;
+  }
+
   this.username = username;
   this.appName = appName;
   this.appToken = appToken;
+  this.prodBoolean = prodBoolean;
+
 
   this.sendRequest = function(url, type, dataToSend, callback) {
+    console.log(url);
     var xhr = new XMLHttpRequest();
     if(type != "GET") {
       xhr.open(type, url, true);
@@ -39,6 +53,7 @@ function Ease(username, appName, appToken) {
       path : path,
       data : data
     };
+    console.log(dataToSend);
     this.sendRequest("http://"+this.baseUrl +"/data/"+this.username+"/"+this.appName, "POST", JSON.stringify(dataToSend), callback);
   };
 
@@ -65,7 +80,7 @@ function Ease(username, appName, appToken) {
 
   this.subscribe = function(application) {
     if(this.conn == undefined) {
-      this.connect();
+      this.connect(application);
     }
 
     var dataToSend = {
@@ -73,7 +88,7 @@ function Ease(username, appName, appToken) {
         appName: application,
         authorization: this.appToken
     };
-
+    console.log("Data to send: " + JSON.stringify(dataToSend))
     if(this.conn.readyState === 1) {
       this.conn.send(JSON.stringify(dataToSend));
     } else {
@@ -83,7 +98,7 @@ function Ease(username, appName, appToken) {
 
   this.connect = function(application) {
     var currentEase = this;
-    currentEase.conn = new WebSocket("ws://ease-62q56ueo.cloudapp.net:8000/sub");
+    currentEase.conn = new WebSocket(this.syncUrl + "/sub");
     currentEase.conn.onclose = function(e) {
       console.log("Connection closed");
     };
