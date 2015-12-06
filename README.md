@@ -23,7 +23,7 @@ Saves a JSON object to the application
 
 ### Parameters:
 
-The save method takes in 3 paramaters
+The save method takes in 3 parameters
 
 `path`: The path for the data to be stored in
 `data`: A JSON object of the data to store
@@ -45,7 +45,7 @@ Retrieves a JSON object from the application
 
 ### Parameters:
 
-The read method takes in 2 paramaters
+The read method takes in 2 parameters
 
 `path`: The path for the data to be read from
 `callback`: A callback function that takes in parameters (err, object) where the object is a JSON object with the data if there is no error
@@ -66,7 +66,7 @@ Deletes a JSON object from the application
 
 ### Parameters:
 
-The read method takes in 2 paramaters
+The read method takes in 2 parameters
 
 `path`: The path for the data to be deleted from
 `callback`: A callback function that takes in parameters (err, object) where the object is a JSON object with the data if there is no error
