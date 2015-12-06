@@ -87,7 +87,7 @@ Subscribes you to the sync service, documentation for the sync service can be fo
 
 ### Parameters:
 
-The read method takes in 1 paramater
+The read method takes in 1 parameter
 
 `application`: The application you would like to be notified about
 
