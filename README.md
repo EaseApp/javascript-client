@@ -31,7 +31,7 @@ The save method takes in 3 parameters
 
 Example:
 ```
-ease.save("/home", "{'data': 'data'}", function(err, data) {
+ease.save("/home", {messages: ["Hello, world!", "Howdy"]}, function(err, data) {
   if(!err) {
     // Handle error
   }
